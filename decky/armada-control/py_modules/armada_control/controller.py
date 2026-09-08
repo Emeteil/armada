@@ -30,3 +30,13 @@ def set_controller_type(value):
     if value not in CONTROLLER_TYPES:
         raise ValueError("invalid controller type")
     return str(call("set_controller_type", value=value).get("value") or controller_type())
+
+
+def inputplumber_targets(env):
+    raw = env.get("ARMADA_IP_TARGETS", "")
+    targets = []
+    for item in raw.split(","):
+        item = item.strip()
+        if item in CONTROLLER_TYPES and item not in targets:
+            targets.append(item)
+    return targets or list(CONTROLLER_TYPES)
